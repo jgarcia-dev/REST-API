@@ -6,6 +6,9 @@ const morgan = require('morgan');
 const db = require('./models/index');
 const sequelize = require('./models').sequelize;
 
+// --- FOR TESTING ------- DELETE AFTER ------------------------
+const { User, Course } = sequelize.models;
+
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
 
@@ -63,3 +66,19 @@ sequelize.sync()
       console.log(`Express server is listening on port ${server.address().port}`);
   });
 });
+
+// --- FOR TESTING ------- DELETE AFTER ------------------------
+(async ()=> {
+  try {
+    const results = await Course.findAll({
+      include: [
+        {
+          model: User
+        }
+      ]
+    });
+    console.log(results.map(result => result.get({ plain: true })));
+  } catch (error) {
+    console.log(`OOps ${error}`);
+  }
+}) ();
