@@ -17,6 +17,8 @@ const app = express();
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
 
+// setup express.json to parse incoming json requests
+app.use(express.json());
 
 // async IIFE - Test db connection
 (async ()=> {

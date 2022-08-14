@@ -28,8 +28,24 @@ router.get('/users', authenticateUser, asyncHandler( async (req, res) => {
 }));
 
 
-// POST - /api/users
+// POST - /users
 //  will create a new user, set the Location header to "/", and 201 HTTP status code with no content.
+router.post('/users', asyncHandler(async (req, res) => {
+    try {
+        await User.create(req.body);
+        res.location('/');
+        res.status(201).end();
+    } catch (error) {
+        console.log('ERROR: ', error.name);
+
+        if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+            const errors = error.errors.map(err => err.message);
+            res.status(400).json({ errors });   
+        } else {
+            throw error;
+        }
+    }
+}));
 
 
 
