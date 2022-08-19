@@ -25,7 +25,10 @@ function asyncHandler(cb){
 router.get('/users', authenticateUser, asyncHandler( async (req, res) => {
     const user = req.currentUser;
 
-    res.json({ user });
+    // filter out unwanted properties
+    const { password, createdAt, updatedAt, ...filteredUser } = user.toJSON();
+
+    res.json( filteredUser );
 }));
 
 
