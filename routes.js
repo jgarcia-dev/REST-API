@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticateUser } = require('./middleware/auth-user');
 const { User, Course } = require('./models');
+const bcrypt = require('bcryptjs');
 
 
 function asyncHandler(cb){
@@ -32,7 +33,9 @@ router.get('/users', authenticateUser, asyncHandler( async (req, res) => {
 //  will create a new user, set the Location header to "/", and 201 HTTP status code with no content.
 router.post('/users', asyncHandler(async (req, res) => {
     try {
-        await User.create(req.body);
+        const user = await User.build(req.body).validate();
+        user.password = bcrypt.hashSync(user.password, 10);
+        await user.save();
         res.location('/');
         res.status(201).end();
     } catch (error) {
