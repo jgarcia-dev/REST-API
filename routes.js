@@ -62,7 +62,13 @@ router.post('/users', asyncHandler(async (req, res) => {
 router.get('/courses', asyncHandler( async (req, res) => {
     try {
         const courses = await Course.findAll();
-        res.status(200).json(courses);
+
+        // filter out unwanted properties
+        const filteredCourses = courses
+            .map( course => course.dataValues )
+            .map( ({createdAt, updatedAt, ...filteredData}) => ({...filteredData}));
+
+        res.status(200).json(filteredCourses);
     } catch (error) {
         console.log('ERROR: ', error.name);
 
@@ -80,7 +86,11 @@ router.get('/courses', asyncHandler( async (req, res) => {
 router.get('/courses/:id', asyncHandler( async(req, res) => {
     try {
         const course = await Course.findByPk(req.params.id);
-        res.status(200).json(course);
+
+        // filter out unwanted properties
+        const { createdAt, updatedAt, ...filteredCourse } = course.toJSON();
+
+        res.status(200).json(filteredCourse);
     } catch (error) {
         console.log('ERROR: ', error.name);
 
