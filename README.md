@@ -12,6 +12,13 @@
 
 
 
+## Running Application
+1. Run `npm install` to install dependencies
+2. Run `npm run seed` to create and seed database
+3. Run `npm start` to run application on local host
+
+
+
 ## Technologies
 
 - Sqlite3 for database
