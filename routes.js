@@ -20,7 +20,7 @@ function asyncHandler(cb){
 
 // ROUTES - Users
 
-// GET - /users
+// GET - /api/users
 //  will return all properties and values for the currently authenticated User and 200 HTTP status code.
 router.get('/users', authenticateUser, asyncHandler( async (req, res) => {
     const user = req.currentUser;
@@ -32,7 +32,7 @@ router.get('/users', authenticateUser, asyncHandler( async (req, res) => {
 }));
 
 
-// POST - /users
+// POST - /api/users
 //  will create a new user, set the Location header to "/", and 201 HTTP status code with no content.
 router.post('/users', asyncHandler(async (req, res) => {
     try {
@@ -57,7 +57,7 @@ router.post('/users', asyncHandler(async (req, res) => {
 
 // ROUTES - Courses
 
-// GET - /courses
+// GET - /api/courses
 // will return all courses including the User associated with each course and 200 HTTP status code.
 router.get('/courses', asyncHandler( async (req, res) => {
     try {
@@ -81,7 +81,7 @@ router.get('/courses', asyncHandler( async (req, res) => {
     }
 }));
 
-// GET - /courses/:id
+// GET - /api/courses/:id
 // will return the corresponding course including the User associated with that course and 200 HTTP status code.
 router.get('/courses/:id', asyncHandler( async(req, res) => {
     try {
@@ -103,7 +103,7 @@ router.get('/courses/:id', asyncHandler( async(req, res) => {
     }
 }));
 
-// POST - /courses
+// POST - /api/courses
 // will create a new course, set the Location header to the URI for the newly created course
 // will also  return a 201 HTTP status code and no content.
 router.post('/courses/', authenticateUser, asyncHandler( async (req, res) => {
@@ -125,7 +125,7 @@ router.post('/courses/', authenticateUser, asyncHandler( async (req, res) => {
     }
 }));
 
-// PUT - /courses/:id
+// PUT - /api/courses/:id
 //will update the corresponding course and return 204 HTTP status code and no content
 router.put('/courses/:id', authenticateUser, asyncHandler( async (req, res) => {
     const user = req.currentUser;
@@ -155,7 +155,7 @@ router.put('/courses/:id', authenticateUser, asyncHandler( async (req, res) => {
 }));
 
 
-// DELETE - courses/:id
+// DELETE - /api/courses/:id
 // will delete the corresponding course and return 204 HTTP status code and no content.
 router.delete('/courses/:id', authenticateUser, asyncHandler( async (req, res) => {
     const user = req.currentUser;
