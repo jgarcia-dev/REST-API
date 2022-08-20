@@ -133,8 +133,12 @@ router.put('/courses/:id', authenticateUser, asyncHandler( async (req, res) => {
     try {
         const course = await Course.findByPk(req.params.id);
         if (course) {
-            await course.update(req.body);
-            res.status(204).end();
+            if (user.id === course.userId) {
+                await course.update(req.body);
+                res.status(204).end();
+            } else {
+                res.status(403).json({message: "This user does not have access to this course"});
+            }
         } else {
             res.status(404).json({message: "Course not found"});
         }
@@ -159,8 +163,12 @@ router.delete('/courses/:id', authenticateUser, asyncHandler( async (req, res) =
     try {
         const course = await Course.findByPk(req.params.id);
         if (course) {
-            await course.destroy();
-            res.status(204).end();
+            if (user.id === course.userId) {
+                await course.destroy();
+                res.status(204).end();
+            } else {
+                res.status(403).json({message: "This user does not have access to this course"});
+            }
         } else {
             res.status(404).json({message: "Course not found"});
         }
