@@ -61,7 +61,15 @@ router.post('/users', asyncHandler(async (req, res) => {
 // will return all courses including the User associated with each course and 200 HTTP status code.
 router.get('/courses', asyncHandler( async (req, res) => {
     try {
-        const courses = await Course.findAll();
+        const courses = await Course.findAll({
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+                }
+            ]
+        });
 
         // filter out unwanted properties
         const filteredCourses = courses
@@ -85,7 +93,17 @@ router.get('/courses', asyncHandler( async (req, res) => {
 // will return the corresponding course including the User associated with that course and 200 HTTP status code.
 router.get('/courses/:id', asyncHandler( async(req, res) => {
     try {
-        const course = await Course.findByPk(req.params.id);
+        const course = await Course.findByPk(req.params.id,
+            {
+                include: [
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+                    }
+                ]
+            }
+        );
 
         // filter out unwanted properties
         const { createdAt, updatedAt, ...filteredCourse } = course.toJSON();
